@@ -1,0 +1,44 @@
+server:
+  port: 60006
+configuracao:
+  node1:
+    porta: 8761
+    host: localhost
+  node2:
+    porta: 8762
+    host: localhost
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://${configuracao.node1.host}:${configuracao.node1.porta}/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    preferIpAddress: true
+  server:
+    wait-time-in-ms-when-sync-empty: 3000
+spring:
+  cloud:
+    config:
+      uri: ${CONFIG_URL:http://localhost:8888}
+  zipkin:
+    enabled: false
+    base-url: http://localhost:9411
+pool:
+  maxConnections: 2
+  minConnections: 1
+  lifeTime: 60000
+  timeout: 1000
+metadata:
+  url: jdbc:postgresql://gcpbaker:5432/dlmgr_db?currentSchema=metadata
+  userName: admin
+  password: cpqdcpqd
+  driverClassName: org.postgresql.Driver
+logging:
+  file: /tmp/log_domain_mananger.log
+  path: logs
+  pattern:
+    file: '%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n'
+  level:
+    root: ERROR
